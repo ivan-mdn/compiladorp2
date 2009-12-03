@@ -1,6 +1,6 @@
 package leandrowilson.compilador;
 
-public abstract class Maquina {
+public class Maquina {
 	public TipoMaquina tipo =null;
 	public  Integer estadoInicial;
 	public Integer[] estadosFinais;
@@ -14,6 +14,9 @@ public abstract class Maquina {
 	public final Integer ESTADO_ERRO_SINTATICO = 999999;
 	
 	
+	public Maquina(TipoMaquina tipoMaquina, String strTransicoes, Integer quantidadeDeEstados) {
+		inicializarMaquina(quantidadeDeEstados, strTransicoes, tipoMaquina);
+	}
 	public Integer proximoEstado(Integer estadoAtual, Token tokemAtual) {
 		if (estadoAtual == ESTADO_ERRO_SINTATICO){
 			geraErroSintatico(estadoAtual,tokemAtual);

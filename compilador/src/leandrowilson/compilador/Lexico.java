@@ -80,18 +80,8 @@ public class Lexico {
 			}
 			else{
 				tokenBuffer.append(ch);
-				
-				//MUDAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAR
-				estadoAtual = tabelaDeTransicao.proximoEstado(estadoAtual, ch);
-				if (tabelaDeTransicao.estadoFinal(estadoAtual)){
-					executaAcaoDeEstadoFinal(estadoAtual);
-				}
-				//
-				
-				
+				listaDeTokens.add(new Token(TipoToken.tipoToken(String.valueOf(ch)), linha));
 				ch = leProximoCaracter();
-				
-				
 			}
 		}
 		
@@ -149,51 +139,51 @@ public class Lexico {
 		return TipoToken.QUEBRADO;
 	}
 
-	private void executaAcaoDeEstadoFinal(int estado) {
-		switch(estado)
-		{	
-			case TabelaDeTransicao.ESTADO_GERATOKEM_ID:
-				retornaCaracter();
-				if (TipoToken.isPalavraReservada(tokenBuffer.toString())){
-					adicionaTokenNaLista(new Token(TipoToken.tipoToken(tokenBuffer.toString()),linha));
-				}
-				else{
-					adicionaTokenNaLista(new Token(tokenBuffer.toString(), TipoToken.ID,linha));
-				}
-				limpaTokenBuffer();
-				estadoAtual=TabelaDeTransicao.ESTADO_INICIAL;
-				break;
-			case TabelaDeTransicao.ESTADO_GERATOKEM_OPERADOR:
-				adicionaTokenNaLista(new Token(TipoToken.tipoToken(tokenBuffer.toString()),linha));
-				estadoAtual=TabelaDeTransicao.ESTADO_INICIAL;
-				limpaTokenBuffer();
-				break;
-			case TabelaDeTransicao.ESTADO_GERATOKEM_OPERADOR_RET:
-				retornaCaracter();
-				adicionaTokenNaLista(new Token(TipoToken.tipoToken(tokenBuffer.toString()),linha));
-				estadoAtual=TabelaDeTransicao.ESTADO_INICIAL;
-				limpaTokenBuffer();
-				break;
-			case TabelaDeTransicao.ESTADO_GERATOKEM_NUMERO:
-				retornaCaracter();
-				adicionaTokenNaLista(new Token(tokenBuffer.toString(), TipoToken.NUMERO,linha));
-				estadoAtual=TabelaDeTransicao.ESTADO_INICIAL;
-				limpaTokenBuffer();
-				break;
-			case TabelaDeTransicao.ESTADO_GERATOKEM_STRING:
-				adicionaTokenNaLista(new Token(tokenBuffer.toString(), TipoToken.STRING,linha));
-				estadoAtual=TabelaDeTransicao.ESTADO_INICIAL;
-				limpaTokenBuffer();
-				break;
-			case TabelaDeTransicao.ESTADO_ERRO:
-				fechaTokenQuebrado();
-				estadoAtual=TabelaDeTransicao.ESTADO_INICIAL;
-				limpaTokenBuffer();
-				break;
-				//demais cases de estado final
-		}
-		
-	}
+//	private void executaAcaoDeEstadoFinal(int estado) {
+//		switch(estado)
+//		{	
+//			case TabelaDeTransicao.ESTADO_GERATOKEM_ID:
+//				retornaCaracter();
+//				if (TipoToken.isPalavraReservada(tokenBuffer.toString())){
+//					adicionaTokenNaLista(new Token(TipoToken.tipoToken(tokenBuffer.toString()),linha));
+//				}
+//				else{
+//					adicionaTokenNaLista(new Token(tokenBuffer.toString(), TipoToken.ID,linha));
+//				}
+//				limpaTokenBuffer();
+//				estadoAtual=TabelaDeTransicao.ESTADO_INICIAL;
+//				break;
+//			case TabelaDeTransicao.ESTADO_GERATOKEM_OPERADOR:
+//				adicionaTokenNaLista(new Token(TipoToken.tipoToken(tokenBuffer.toString()),linha));
+//				estadoAtual=TabelaDeTransicao.ESTADO_INICIAL;
+//				limpaTokenBuffer();
+//				break;
+//			case TabelaDeTransicao.ESTADO_GERATOKEM_OPERADOR_RET:
+//				retornaCaracter();
+//				adicionaTokenNaLista(new Token(TipoToken.tipoToken(tokenBuffer.toString()),linha));
+//				estadoAtual=TabelaDeTransicao.ESTADO_INICIAL;
+//				limpaTokenBuffer();
+//				break;
+//			case TabelaDeTransicao.ESTADO_GERATOKEM_NUMERO:
+//				retornaCaracter();
+//				adicionaTokenNaLista(new Token(tokenBuffer.toString(), TipoToken.NUMERO,linha));
+//				estadoAtual=TabelaDeTransicao.ESTADO_INICIAL;
+//				limpaTokenBuffer();
+//				break;
+//			case TabelaDeTransicao.ESTADO_GERATOKEM_STRING:
+//				adicionaTokenNaLista(new Token(tokenBuffer.toString(), TipoToken.STRING,linha));
+//				estadoAtual=TabelaDeTransicao.ESTADO_INICIAL;
+//				limpaTokenBuffer();
+//				break;
+//			case TabelaDeTransicao.ESTADO_ERRO:
+//				fechaTokenQuebrado();
+//				estadoAtual=TabelaDeTransicao.ESTADO_INICIAL;
+//				limpaTokenBuffer();
+//				break;
+//				//demais cases de estado final
+//		}
+//		
+//	}
 
 //	private boolean palavrareservada(String identificador) {
 //		for (int i =0;i<palavrasReservadas.length;i++){
