@@ -6,17 +6,64 @@ public class Sintatico {
 	Integer ponteiroTokem = -1;
 	
 	//Maquinas De Analise Sintatica/Semantica
-	MaquinaPrograma maquinaPrograma = new MaquinaPrograma();
-	MaquinaFuncao maquinaFuncao = new MaquinaFuncao();
-	MaquinaProcedimento maquinaProcedimento = new MaquinaProcedimento();
-	MaquinaDeclaracao maquinaDeclaracao = new MaquinaDeclaracao();
-	MaquinaComando maquinaComando= new MaquinaComando();
-	MaquinaExpressao maquinaExpressao= new MaquinaExpressao();
-	MaquinaExpBooleana maquinaExpBooleana = new MaquinaExpBooleana();
-	MaquinaExpRelacional maquinaExpRelacional = new MaquinaExpRelacional();
-	MaquinaExpAritmetica maquinaExpAritmetica = new MaquinaExpAritmetica();
-	MaquinaExpString maquinaExpString = new MaquinaExpString();
+	String strProgram = "initial: 0%"+
+						"final: 1%"+
+						"(0, Expr) -> 1%"+
+						"(1, Expr) -> 1%"; 
+	Maquina MaquinaProgram = new Maquina(TipoMaquina.PROGRAM,strProgram, 2);
 	
+	String strExpr = "initial: 0%"+
+	"final: 1%"+
+	"(0, \"i\") -> 1%"+
+	"(0, Expr_) -> 1%";
+	Maquina MaquinaExpr = new Maquina(TipoMaquina.EXPR,strExpr,1);
+	
+	String strIotaExpr = "initial: 0%"+
+	"final: 1%"+
+	"(0, \"i\") -> 1%"+
+	"(0, Expr_) -> 1%";
+	
+	Maquina maquinaIotaExpr = new Maquina(TipoMaquina.IOTAEXPR,strIotaExpr,1);
+	
+	String strQuoteExpr = "initial: 0%"+
+	"final: 3%"+
+	"(0, \"`\") -> 1%"+
+	"(1, Expr) -> 2%"+
+	"(2, Expr) -> 3%";
+	
+	Maquina MaquinaQuoteExpr = new Maquina(TipoMaquina.QUOTEEXPR,strQuoteExpr,3);
+	
+	String strAstIota = "initial: 0%"+
+	"final: 3%"+
+	"(0, \"*\") -> 1%"+
+	"(1, IotaExpr) -> 2%"+
+	"(2, IotaExpr) -> 3%";
+	
+	Maquina MaquinaAstIota= new Maquina(TipoMaquina.ASTIOTA,strAstIota,3);
+	
+	String strExpr2 = "initial: 0%"+
+	"final: 1%"+
+	"(0, \"I\") -> 1%"+
+	"(0, \"K\") -> 1%"+
+	"(0, \"k\") -> 1%"+
+	"(0, \"S\") -> 1%"+
+	"(0, \"s\") -> 1%"+
+	"(0, NonemptyJotExpr) -> 1%"+
+	"(0, quoteExp) -> 1%"+
+	"(0, IotaExpr) -> 1%"+
+	"(0, \"(\") -> 2%"+
+	"(2, CCExpr) -> 3%"+
+	"(3, \")\") -> 1%";
+	
+	Maquina MaquinaExpr2= new Maquina(TipoMaquina.EXPR2,strExpr2,11);
+	
+	String strNonemptyJotExpr = "initial: 0%"+
+	"final: 1%"+
+	"(0, \"0\") -> 1%"+
+	"(0, \"1\") -> 1%"+
+	"(1, \"0\") -> 1%"+
+	"(1, \"1\") -> 1%";
+	Maquina  MaquinaNonemptyJotExpr = new Maquina(TipoMaquina.NONEMPTYJOTEXPR,strNonemptyJotExpr,4);
 	
 	public Sintatico(List ListaDeTokens) {
 		this.listaDeTokens = ListaDeTokens;
@@ -33,8 +80,8 @@ public class Sintatico {
 		PilhaSintatico pilhaSintatico = new PilhaSintatico();
 		Integer estadoAtual=0;
 		Integer proximoEstado =0;
-		TipoMaquina maquinaAtual = TipoMaquina.PROGRAMA;
-		TipoMaquina proximaMaquina= TipoMaquina.PROGRAMA;
+		TipoMaquina maquinaAtual = TipoMaquina.PROGRAM;
+		TipoMaquina proximaMaquina= TipoMaquina.PROGRAM;
 		Boolean novaMaquina = false;
 		Boolean retornaMaquina = false;
 		Token tokemAtual = new Token();
@@ -44,81 +91,60 @@ public class Sintatico {
 		} catch (Exception e) {
 			return false;
 		}
-		pilhaSintatico.push(0, TipoMaquina.PROGRAMA);
+		pilhaSintatico.push(0, TipoMaquina.PROGRAM);
 		
 		
 		while(!pilhaSintatico.isEmpty()){
 			
 			switch (maquinaAtual){
-				case PROGRAMA:
-					proximoEstado 	= maquinaPrograma.proximoEstado(estadoAtual, tokemAtual);
-					proximaMaquina 	= maquinaPrograma.proximaMaquina(estadoAtual, tokemAtual);
-					novaMaquina 	= maquinaPrograma.novaMaquina(estadoAtual, tokemAtual);
-					retornaMaquina 	= maquinaPrograma.retornaMaquina(estadoAtual,tokemAtual);
-					transicaoSemantica= maquinaPrograma.transSemantica(estadoAtual,tokemAtual);
+				case ASTIOTA:
+					proximoEstado 	= MaquinaAstIota.proximoEstado(estadoAtual, tokemAtual);
+					proximaMaquina 	= MaquinaAstIota.proximaMaquina(estadoAtual, tokemAtual);
+					novaMaquina 	= MaquinaAstIota.novaMaquina(estadoAtual, tokemAtual);
+					retornaMaquina 	= MaquinaAstIota.retornaMaquina(estadoAtual,tokemAtual);
+					transicaoSemantica= MaquinaAstIota.transSemantica(estadoAtual,tokemAtual);
 					break;
-				case FUNCAO:
-					proximoEstado 	= maquinaFuncao.proximoEstado(estadoAtual, tokemAtual);
-					proximaMaquina 	= maquinaFuncao.proximaMaquina(estadoAtual, tokemAtual);
-					novaMaquina 	= maquinaFuncao.novaMaquina(estadoAtual, tokemAtual);
-					retornaMaquina 	= maquinaFuncao.retornaMaquina(estadoAtual,tokemAtual);
-					transicaoSemantica= maquinaFuncao.transSemantica(estadoAtual,tokemAtual);
+				case EXPR:
+					proximoEstado 	= MaquinaExpr.proximoEstado(estadoAtual, tokemAtual);
+					proximaMaquina 	= MaquinaExpr.proximaMaquina(estadoAtual, tokemAtual);
+					novaMaquina 	= MaquinaExpr.novaMaquina(estadoAtual, tokemAtual);
+					retornaMaquina 	= MaquinaExpr.retornaMaquina(estadoAtual,tokemAtual);
+					transicaoSemantica= MaquinaExpr.transSemantica(estadoAtual,tokemAtual);
 					break;
-				case PROCEDIMENTO:
-					proximoEstado 	= maquinaProcedimento.proximoEstado(estadoAtual, tokemAtual);
-					proximaMaquina 	= maquinaProcedimento.proximaMaquina(estadoAtual, tokemAtual);
-					novaMaquina 	= maquinaProcedimento.novaMaquina(estadoAtual, tokemAtual);
-					retornaMaquina 	= maquinaProcedimento.retornaMaquina(estadoAtual,tokemAtual);
-					transicaoSemantica= maquinaProcedimento.transSemantica(estadoAtual,tokemAtual);
+				case EXPR2:
+					proximoEstado 	= MaquinaExpr2.proximoEstado(estadoAtual, tokemAtual);
+					proximaMaquina 	= MaquinaExpr2.proximaMaquina(estadoAtual, tokemAtual);
+					novaMaquina 	= MaquinaExpr2.novaMaquina(estadoAtual, tokemAtual);
+					retornaMaquina 	= MaquinaExpr2.retornaMaquina(estadoAtual,tokemAtual);
+					transicaoSemantica= MaquinaExpr2.transSemantica(estadoAtual,tokemAtual);
 					break;
-				case DECLARACAO:
-					proximoEstado 	= maquinaDeclaracao.proximoEstado(estadoAtual, tokemAtual);
-					proximaMaquina 	= maquinaDeclaracao.proximaMaquina(estadoAtual, tokemAtual);
-					novaMaquina 	= maquinaDeclaracao.novaMaquina(estadoAtual, tokemAtual);
-					retornaMaquina 	= maquinaDeclaracao.retornaMaquina(estadoAtual,tokemAtual);
-					transicaoSemantica= maquinaDeclaracao.transSemantica(estadoAtual,tokemAtual);
+				case IOTAEXPR:
+					proximoEstado 	= maquinaIotaExpr.proximoEstado(estadoAtual, tokemAtual);
+					proximaMaquina 	= maquinaIotaExpr.proximaMaquina(estadoAtual, tokemAtual);
+					novaMaquina 	= maquinaIotaExpr.novaMaquina(estadoAtual, tokemAtual);
+					retornaMaquina 	= maquinaIotaExpr.retornaMaquina(estadoAtual,tokemAtual);
+					transicaoSemantica= maquinaIotaExpr.transSemantica(estadoAtual,tokemAtual);
 					break;
-				case COMANDO:
-					proximoEstado 	= maquinaComando.proximoEstado(estadoAtual, tokemAtual);
-					proximaMaquina 	= maquinaComando.proximaMaquina(estadoAtual, tokemAtual);
-					novaMaquina 	= maquinaComando.novaMaquina(estadoAtual, tokemAtual);
-					retornaMaquina 	= maquinaComando.retornaMaquina(estadoAtual,tokemAtual);
-					transicaoSemantica= maquinaComando.transSemantica(estadoAtual,tokemAtual);
+				case NONEMPTYJOTEXPR:
+					proximoEstado 	= MaquinaNonemptyJotExpr.proximoEstado(estadoAtual, tokemAtual);
+					proximaMaquina 	= MaquinaNonemptyJotExpr.proximaMaquina(estadoAtual, tokemAtual);
+					novaMaquina 	= MaquinaNonemptyJotExpr.novaMaquina(estadoAtual, tokemAtual);
+					retornaMaquina 	= MaquinaNonemptyJotExpr.retornaMaquina(estadoAtual,tokemAtual);
+					transicaoSemantica= MaquinaNonemptyJotExpr.transSemantica(estadoAtual,tokemAtual);
 					break;
-				case EXPRESSAO:
-					proximoEstado 	= maquinaExpressao.proximoEstado(estadoAtual, tokemAtual);
-					proximaMaquina 	= maquinaExpressao.proximaMaquina(estadoAtual, tokemAtual, (Token) listaDeTokens.get(ponteiroTokem+1));
-					novaMaquina 	= maquinaExpressao.novaMaquina(estadoAtual, tokemAtual);
-					retornaMaquina 	= maquinaExpressao.retornaMaquina(estadoAtual,tokemAtual);
-					transicaoSemantica= maquinaExpressao.transSemantica(estadoAtual,tokemAtual);
+				case PROGRAM:
+					proximoEstado 	= MaquinaProgram.proximoEstado(estadoAtual, tokemAtual);
+					proximaMaquina 	= MaquinaProgram.proximaMaquina(estadoAtual, tokemAtual);
+					novaMaquina 	= MaquinaProgram.novaMaquina(estadoAtual, tokemAtual);
+					retornaMaquina 	= MaquinaProgram.retornaMaquina(estadoAtual,tokemAtual);
+					transicaoSemantica= MaquinaProgram.transSemantica(estadoAtual,tokemAtual);
 					break;
-				case EXPBOOLEANA:
-					proximoEstado 	= maquinaExpBooleana.proximoEstado(estadoAtual, tokemAtual);
-					proximaMaquina 	= maquinaExpBooleana.proximaMaquina(estadoAtual, tokemAtual);
-					novaMaquina 	= maquinaExpBooleana.novaMaquina(estadoAtual, tokemAtual);
-					retornaMaquina 	= maquinaExpBooleana.retornaMaquina(estadoAtual,tokemAtual);
-					transicaoSemantica= maquinaExpBooleana.transSemantica(estadoAtual,tokemAtual);
-					break;
-				case EXPRELACIONAL:
-					proximoEstado 	= maquinaExpRelacional.proximoEstado(estadoAtual, tokemAtual);
-					proximaMaquina 	= maquinaExpRelacional.proximaMaquina(estadoAtual, tokemAtual);
-					novaMaquina 	= maquinaExpRelacional.novaMaquina(estadoAtual, tokemAtual);
-					retornaMaquina 	= maquinaExpRelacional.retornaMaquina(estadoAtual,tokemAtual);
-					transicaoSemantica= maquinaExpRelacional.transSemantica(estadoAtual,tokemAtual);
-					break;
-				case EXPARITMETICA:
-					proximoEstado 	= maquinaExpAritmetica.proximoEstado(estadoAtual, tokemAtual);
-					proximaMaquina 	= maquinaExpAritmetica.proximaMaquina(estadoAtual, tokemAtual);
-					novaMaquina 	= maquinaExpAritmetica.novaMaquina(estadoAtual, tokemAtual);
-					retornaMaquina 	= maquinaExpAritmetica.retornaMaquina(estadoAtual,tokemAtual);
-					transicaoSemantica= maquinaExpAritmetica.transSemantica(estadoAtual,tokemAtual);
-					break;
-				case EXPSTRING:
-					proximoEstado 	= maquinaExpString.proximoEstado(estadoAtual, tokemAtual);
-					proximaMaquina 	= maquinaExpString.proximaMaquina(estadoAtual, tokemAtual);
-					novaMaquina 	= maquinaExpString.novaMaquina(estadoAtual, tokemAtual);
-					retornaMaquina 	= maquinaExpString.retornaMaquina(estadoAtual,tokemAtual);
-					transicaoSemantica= maquinaExpString.transSemantica(estadoAtual,tokemAtual);
+				case QUOTEEXPR:
+					proximoEstado 	= MaquinaQuoteExpr.proximoEstado(estadoAtual, tokemAtual);
+					proximaMaquina 	= MaquinaQuoteExpr.proximaMaquina(estadoAtual, tokemAtual);
+					novaMaquina 	= MaquinaQuoteExpr.novaMaquina(estadoAtual, tokemAtual);
+					retornaMaquina 	= MaquinaQuoteExpr.retornaMaquina(estadoAtual,tokemAtual);
+					transicaoSemantica= MaquinaQuoteExpr.transSemantica(estadoAtual,tokemAtual);
 					break;
 			}
 			Util.Log("Maquina:"+maquinaAtual.toString()+"  Estado:"+estadoAtual.toString()+" Token:<"+tokemAtual.tipo.toString()+","+tokemAtual.valor+">");

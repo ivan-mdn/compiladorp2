@@ -1,16 +1,13 @@
 package leandrowilson.compilador;
 
 public enum TipoMaquina {
-	PROGRAMA(new TipoToken[] {TipoToken.PR_MAIN}),
-	FUNCAO(new TipoToken[] {TipoToken.PR_FUNCTION}),
-	PROCEDIMENTO(new TipoToken[] {TipoToken.PR_PROCEDURE}),
-	DECLARACAO(new TipoToken[] {TipoToken.PR_INT,TipoToken.PR_STRING,TipoToken.PR_BOOLEAN,TipoToken.PR_DECLARE , TipoToken.PR_STRUCT}),
-	COMANDO(new TipoToken[] {TipoToken.ID,TipoToken.PR_IF,TipoToken.PR_WHILE,TipoToken.PR_INPUT,TipoToken.PR_OUTPUT,TipoToken.PR_CALLPROC}),
-	EXPRESSAO(new TipoToken[] {TipoToken.PR_CALLPROC,TipoToken.ID,TipoToken.PR_TRUE ,TipoToken.PR_FALSE , TipoToken.PARENTESE_ABRE,TipoToken.NOT,TipoToken.ID,TipoToken.NUMERO,TipoToken.MINUS,TipoToken.PLUS,TipoToken.STRING}),
-	EXPBOOLEANA(new TipoToken[] {TipoToken.ID,TipoToken.PR_TRUE ,TipoToken.PR_FALSE , TipoToken.PARENTESE_ABRE,TipoToken.NOT }),
-	EXPRELACIONAL(new TipoToken[] {TipoToken.ID,TipoToken.NUMERO}),
-	EXPARITMETICA(new TipoToken[] {TipoToken.MINUS,TipoToken.PLUS}),
-	EXPSTRING(new TipoToken[] {TipoToken.STRING});
+	PROGRAM(new TipoToken[] {TipoToken.I_MINUSCULO,TipoToken.I,TipoToken.K,TipoToken.S ,TipoToken.ZERO,TipoToken.UM ,TipoToken.ASPA , TipoToken.ASTERISCO,TipoToken.I_MINUSCULO,TipoToken.ABRE_PAR}),
+	EXPR(new TipoToken[] {TipoToken.I_MINUSCULO,TipoToken.I,TipoToken.K,TipoToken.S ,TipoToken.ZERO,TipoToken.UM ,TipoToken.ASPA , TipoToken.ASTERISCO,TipoToken.I_MINUSCULO,TipoToken.ABRE_PAR}),
+	IOTAEXPR(new TipoToken[] {TipoToken.I_MINUSCULO,TipoToken.I,TipoToken.K,TipoToken.S ,TipoToken.ZERO,TipoToken.UM ,TipoToken.ASPA , TipoToken.ASTERISCO,TipoToken.I_MINUSCULO,TipoToken.ABRE_PAR}),
+	QUOTEEXPR(new TipoToken[] {TipoToken.ASPA}),
+	ASTIOTA(new TipoToken[] {TipoToken.ASTERISCO}),
+	EXPR2(new TipoToken[] {TipoToken.I,TipoToken.K,TipoToken.S ,TipoToken.ZERO,TipoToken.UM ,TipoToken.ASPA , TipoToken.ASTERISCO,TipoToken.I_MINUSCULO,TipoToken.ABRE_PAR}),
+	NONEMPTYJOTEXPR(new TipoToken[] {TipoToken.ZERO,TipoToken.UM }),;
 
 	private final TipoToken[] first;
 	public TipoToken[] first() {
@@ -42,50 +39,38 @@ public enum TipoMaquina {
 	
 	}
 	
-	public static Boolean ehMaquina(String maquina){
-		if (maquina.equals("programa"))
+	public static TipoMaquina tipoMaquina(String maquina) {
+		if (maquina.equals("Program"))
+			return TipoMaquina.PROGRAM;
+		if (maquina.equals("Expr"))
+			return TipoMaquina.EXPR;
+		if (maquina.equals("IotaExpr "))
+			return TipoMaquina.IOTAEXPR;
+		if (maquina.equals("quoteExp"))
+			return TipoMaquina.QUOTEEXPR;
+		if (maquina.equals("astIota"))
+			return TipoMaquina.ASTIOTA;
+		if (maquina.equals("Expr2"))
+			return TipoMaquina.EXPR2;
+		if (maquina.equals("NonemptyJotExpr"))
+			return TipoMaquina.NONEMPTYJOTEXPR;
+		return null;
+	}
+	public static boolean ehMaquina(String maquina) {
+		if (maquina.equals("Program"))
 			return true;
-		if (maquina.equals("funcao"))
+		if (maquina.equals("Expr"))
 			return true;
-		if (maquina.equals("procedimento"))
+		if (maquina.equals("IotaExpr "))
 			return true;
-		if (maquina.equals("declaracao"))
+		if (maquina.equals("quoteExp"))
 			return true;
-		if (maquina.equals("comando"))
+		if (maquina.equals("astIota"))
 			return true;
-		if (maquina.equals("expressao"))
+		if (maquina.equals("Expr2"))
 			return true;
-		if (maquina.equals("expbooleana"))
-			return true;
-		if (maquina.equals("exprelacional"))
-			return true;
-		if (maquina.equals("exparitmetica"))
-			return true;
-		if (maquina.equals("expstring"))
+		if (maquina.equals("NonemptyJotExpr"))
 			return true;
 		return false;
-	}
-	public static TipoMaquina tipoMaquina(String maquina) {
-		if (maquina.equals("programa"))
-			return TipoMaquina.PROGRAMA;
-		if (maquina.equals("funcao"))
-			return TipoMaquina.FUNCAO;
-		if (maquina.equals("procedimento"))
-			return TipoMaquina.PROCEDIMENTO;
-		if (maquina.equals("declaracao"))
-			return TipoMaquina.DECLARACAO;
-		if (maquina.equals("comando"))
-			return TipoMaquina.COMANDO;
-		if (maquina.equals("expressao"))
-			return TipoMaquina.EXPRESSAO;
-		if (maquina.equals("expbooleana"))
-			return TipoMaquina.EXPBOOLEANA;
-		if (maquina.equals("exprelacional"))
-			return TipoMaquina.EXPRELACIONAL;
-		if (maquina.equals("exparitmetica"))
-			return TipoMaquina.EXPARITMETICA;
-		if (maquina.equals("expstring"))
-			return TipoMaquina.EXPSTRING;
-		return null;
 	}
 }

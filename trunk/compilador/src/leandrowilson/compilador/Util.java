@@ -36,12 +36,14 @@ public   class Util {
 		}
 	}
 	public static Integer obterEstadoInicial(String strTransicoes){
+		strTransicoes =strTransicoes.replace(" ", "");
 		String[] linhas = strTransicoes.split("%");
 		Integer inicial =new Integer(linhas[0].split("initial:")[1]);
 		Log("Estado Inicial obtido:"+inicial.toString());
 		return inicial;
 	}
 	public static Integer[] obterEstadosFinais(String strTransicoes){
+		strTransicoes =strTransicoes.replace(" ", "");
 		String[] linhas = strTransicoes.split("%");
 		String[] finais = linhas[1].split("final:")[1].split(",");
 		Integer[] est_final =new Integer[finais.length];
@@ -49,13 +51,12 @@ public   class Util {
 			est_final[i] = new Integer(finais[i]);
 		}
 		if (log){
-			Log("Estados Finais obtidos:");
 			StringBuffer str = new StringBuffer("{");
 			for(int i =0;i<est_final.length;i++){
 				str.append(est_final[i].toString()+",");
 			}
 			str.append("}");
-			Log(str.toString());
+			Log("Estados Finais obtidos:"+str.toString());
 		}
 		
 		return est_final;
@@ -90,6 +91,7 @@ public   class Util {
 	 * @return
 	 */
 	public static List obterTransicoes(String strTransicoes){
+		strTransicoes =strTransicoes.replace(" ", "");
 		List listaDeTransicoes = new List();
 		
 		String[]lados =null;
@@ -99,20 +101,20 @@ public   class Util {
 		String proximoEstado=null;
 		String[] linhas = strTransicoes.split("%");
 		for (int i =2;i<linhas.length;i++){
-			Log(linhas[i]);
+			//Log(linhas[i]);
 			lados = linhas[i].split("->");
 			proximoEstado = lados[1];
-			Log(lados[0]);
-			Log(proximoEstado);
+			//Log(lados[0]);
+			//Log(proximoEstado);
 			//lados[0]=lados[0].replaceFirst("\\(", "");
 			lados[0]=lados[0].substring(1, lados[0].length()-1);
-			Log(lados[0]);
+//			Log(lados[0]);
 			lados[0] = lados[0].replaceFirst(",", "%");
 			ladoEsquerdo = lados[0].split( "%");
 			estadoInicial = ladoEsquerdo[0];
 			entrada = ladoEsquerdo[1];
-			Log(estadoInicial);
-			Log(entrada);
+//			Log(estadoInicial);
+//			Log(entrada);
 			Log("Transicao Lida - estado inicial:"+estadoInicial+" entrada:"+entrada+" proximo estado:"+proximoEstado);
 			if (TipoMaquina.ehMaquina(entrada)){
 				listaDeTransicoes.add(new TransicaoSintatica(true,estadoInicial,entrada,proximoEstado,i-2));

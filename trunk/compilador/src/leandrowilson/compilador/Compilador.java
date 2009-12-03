@@ -19,8 +19,8 @@ public class Compilador {
 		System.out.println("Digite o nome do arquivo que deseja compilar:");
 		
 		
-		nomeDoArquivo = scanner.next();
-//		nomeDoArquivo = "c:\\teste.txt";
+//		nomeDoArquivo = scanner.next();
+		nomeDoArquivo = "c:\\testeP2.txt";
 //		nomeDoArquivo = "c:\\teste_reservadas.txt";
 //		nomeDoArquivo = "c:\\testePrograma.txt";
 //		nomeDoArquivo = "c:\\testeSemantico.txt";
@@ -29,13 +29,13 @@ public class Compilador {
 	    System.out.println("Lendo arquivo:"+nomeDoArquivo);
 //	    testalexico(nomeDoArquivo);
 		sintatico = new Sintatico(lex.obterListaDeTokens(nomeDoArquivo));
-		if (sintatico.executa()){
-			System.out.println("Sintatico finalizado com sucesso!");
-		}
-		else{
-			System.out.println("Sintatico finalizado com ERRO!");
-			printErrorList(sintatico.getErros());
-		}
+//		if (sintatico.executa()){
+//			System.out.println("Sintatico finalizado com sucesso!");
+//		}
+//		else{
+//			System.out.println("Sintatico finalizado com ERRO!");
+//			printErrorList(sintatico.getErros());
+//		}
 	}
 	private static void printErrorList(List erros) {
 		Erro erro =null;
