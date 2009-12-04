@@ -28,14 +28,15 @@ public class Compilador {
 		nomeDoArquivo = nomeDoArquivo.replace("\\", "\\\\");
 	    System.out.println("Lendo arquivo:"+nomeDoArquivo);
 //	    testalexico(nomeDoArquivo);
-		sintatico = new Sintatico(lex.obterListaDeTokens(nomeDoArquivo));
-//		if (sintatico.executa()){
-//			System.out.println("Sintatico finalizado com sucesso!");
-//		}
-//		else{
-//			System.out.println("Sintatico finalizado com ERRO!");
-//			printErrorList(sintatico.getErros());
-//		}
+	    List listaDeTokens =lex.obterListaDeTokens(nomeDoArquivo);
+		sintatico = new Sintatico(listaDeTokens);
+		if (sintatico.executa()){
+			System.out.println("Sintatico finalizado com sucesso!");
+		}
+		else{
+			System.out.println("Sintatico finalizado com ERRO!");
+			printErrorList(sintatico.getErros());
+		}
 	}
 	private static void printErrorList(List erros) {
 		Erro erro =null;

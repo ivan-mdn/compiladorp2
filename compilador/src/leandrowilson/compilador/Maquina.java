@@ -11,7 +11,8 @@ public class Maquina {
 	List erros = new List();
 	
 	public Integer  QUANTIDADE_DE_TIPOTOKENS = TipoToken.tamanho();
-	public final Integer ESTADO_ERRO_SINTATICO = 999999;
+	public static final Integer ESTADO_ERRO_SINTATICO = 999999;
+	public static final Integer ESTADO_ULTIMO_TOKEN = 999990;
 	
 	
 	public Maquina(TipoMaquina tipoMaquina, String strTransicoes, Integer quantidadeDeEstados) {
@@ -71,6 +72,7 @@ public class Maquina {
 				tabelaNovaMaquina[k][j] = false;
 				tabelaTransicaoSemantica[k][j] =-1;
 			}
+			tabelaTransicao[k][TipoToken.LAST.valor()] = ESTADO_ULTIMO_TOKEN;
 		}
 		List transicoes = Util.obterTransicoes(strTransicoes);
 		for(int i=0;i<transicoes.tamanho;i++){

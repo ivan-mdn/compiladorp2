@@ -9,21 +9,21 @@ public class Sintatico {
 	String strProgram = "initial: 0%"+
 						"final: 1%"+
 						"(0, Expr) -> 1%"+
-						"(1, Expr) -> 1%"; 
+						"(1, Expr) -> 1%";
 	Maquina MaquinaProgram = new Maquina(TipoMaquina.PROGRAM,strProgram, 2);
 	
 	String strExpr = "initial: 0%"+
 	"final: 1%"+
 	"(0, \"i\") -> 1%"+
-	"(0, Expr_) -> 1%";
-	Maquina MaquinaExpr = new Maquina(TipoMaquina.EXPR,strExpr,1);
+	"(0, Expr2) -> 1%";
+	Maquina MaquinaExpr = new Maquina(TipoMaquina.EXPR,strExpr,2);
 	
 	String strIotaExpr = "initial: 0%"+
 	"final: 1%"+
 	"(0, \"i\") -> 1%"+
-	"(0, Expr_) -> 1%";
+	"(0, Expr2) -> 1%";
 	
-	Maquina maquinaIotaExpr = new Maquina(TipoMaquina.IOTAEXPR,strIotaExpr,1);
+	Maquina maquinaIotaExpr = new Maquina(TipoMaquina.IOTAEXPR,strIotaExpr,2);
 	
 	String strQuoteExpr = "initial: 0%"+
 	"final: 3%"+
@@ -52,8 +52,8 @@ public class Sintatico {
 	"(0, quoteExp) -> 1%"+
 	"(0, IotaExpr) -> 1%"+
 	"(0, \"(\") -> 2%"+
-	"(2, CCExpr) -> 3%"+
-	"(3, \")\") -> 1%";
+	"(2, Expr) -> 2%"+
+	"(2, \")\") -> 1%";
 	
 	Maquina MaquinaExpr2= new Maquina(TipoMaquina.EXPR2,strExpr2,11);
 	
@@ -95,7 +95,7 @@ public class Sintatico {
 		
 		
 		while(!pilhaSintatico.isEmpty()){
-			
+			Util.Log("Maquina:"+maquinaAtual.toString()+"  Estado:"+estadoAtual.toString()+" Token:<"+tokemAtual.tipo.toString()+","+tokemAtual.valor+">");
 			switch (maquinaAtual){
 				case ASTIOTA:
 					proximoEstado 	= MaquinaAstIota.proximoEstado(estadoAtual, tokemAtual);
@@ -147,7 +147,7 @@ public class Sintatico {
 					transicaoSemantica= MaquinaQuoteExpr.transSemantica(estadoAtual,tokemAtual);
 					break;
 			}
-			Util.Log("Maquina:"+maquinaAtual.toString()+"  Estado:"+estadoAtual.toString()+" Token:<"+tokemAtual.tipo.toString()+","+tokemAtual.valor+">");
+			
 			elSemantico = new ElementoSemantico(escopoAtual, maquinaAtual, transicaoSemantica, pilhaSemantico,tokemAtual);
 			elSemantico = semantico.analisa(elSemantico);
 			escopoAtual = elSemantico.escopo;
@@ -173,7 +173,7 @@ public class Sintatico {
 			}
 			
 		}
-		semantico.geraArquivoMVN();
+		semantico.geraArquivo();
 		if (!fimDosTokens()){
 			erros.add(new Erro(TipoErro.SINTATICO_FIMDEPILHA_ANTES_DO_FIM_DOS_TOKENS,tokemAtual));
 			return false;
