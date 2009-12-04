@@ -1,0 +1,35 @@
+Descricao dos arquivos desta pasta
+
+P2_2009_Leandro_Wilson_EXECUTAVEL.jar
+-Este é o executavel do compilador criado. Deve ser executado com o comando:
+
+java -jar P2_2009_Leandro_Wilson_EXECUTAVEL.jar
+
+
+exemplo_de_entrada.crveja
+
+Este é um arquivo de exemplo de entrada, 
+quando executar o compilador, e o arquivo de entrada for solicitado,
+basta digitar este nome de arquivo (incluindo a extensao)
+
+saida.c
+
+Esta é a saida gerada pela compilaçao do arquivo exemplo_de_entrada.crveja
+ 
+
+saida.exe
+
+É o resultado da compilaçao do arquivo saida.c
+
+
+
+Pasta Código Fonte
+
+Contém o código fonte do compilador da P2
+
+
+P2_Compiladores.doc
+Relatório final em formato .doc
+
+P2_Compiladores.pdf
+Relatório final em formato .pdf
